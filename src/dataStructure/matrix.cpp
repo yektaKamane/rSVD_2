@@ -1,5 +1,5 @@
 // matrix.cpp
-#include "matrix.h"
+#include "../../include/dataStructure/matrix.hpp"
 #include <iostream>
 
 Matrix::Matrix(int rows, int cols) : rows(rows), cols(cols) {
@@ -9,6 +9,26 @@ Matrix::Matrix(int rows, int cols) : rows(rows), cols(cols) {
 Matrix::Matrix(const std::vector<std::vector<double>>& input_data) : data(input_data) {
     rows = static_cast<int>(data.size());
     cols = (rows > 0) ? static_cast<int>(data[0].size()) : 0;
+}
+
+Matrix::Matrix(std::initializer_list<std::initializer_list<double>> values) {
+    // Determine the number of rows and columns
+    rows = static_cast<int>(values.size());
+    cols = (rows > 0) ? static_cast<int>(values.begin()->size()) : 0;
+
+    // Resize the matrix
+    data.resize(rows, std::vector<double>(cols, 0.0));
+
+    // Copy values from the initializer list to the matrix
+    int i = 0;
+    for (const auto& row : values) {
+        int j = 0;
+        for (const auto& value : row) {
+            data[i][j] = value;
+            ++j;
+        }
+        ++i;
+    }
 }
 
 int Matrix::getRows() const {
@@ -95,4 +115,35 @@ void Matrix::display() const {
         std::cout << "\n";
     }
     std::cout << "\n";
+}
+
+Matrix Matrix::identity(int size) {
+    Matrix result(size, size);
+    for (int i = 0; i < size; ++i) {
+        result.setElement(i, i, 1.0);
+    }
+    return result;
+}
+
+void Matrix::setBlock(int row, int col, const Matrix& block) {
+    int blockRows = block.getRows();
+    int blockCols = block.getCols();
+
+    for (int i = 0; i < blockRows; ++i) {
+        for (int j = 0; j < blockCols; ++j) {
+            setElement(row + i, col + j, block.getElement(i, j));
+        }
+    }
+}
+
+Matrix Matrix::getBlock(int row, int col, int numRows, int numCols) const {
+    Matrix block(numRows, numCols);
+
+    for (int i = 0; i < numRows; ++i) {
+        for (int j = 0; j < numCols; ++j) {
+            block.setElement(i, j, getElement(row + i, col + j));
+        }
+    }
+
+    return block;
 }
