@@ -4,16 +4,26 @@
 #include "../include/dataStructure/matrix.hpp"
 
 Matrix givens_rotation(double a, double b) {
-    double r = std::sqrt(a*a + b*b);
-    double c = a / r;
-    double s = -b / r;
-
+    
     Matrix G(2, 2);
-    G.setElement(0, 0, c);
-    G.setElement(0, 1, -s);
-    G.setElement(1, 0, s);
-    G.setElement(1, 1, c);
 
+    if (b == 0.0){
+        G.setElement(0, 0, 1.0);
+        G.setElement(0, 1, 0.0);
+        G.setElement(1, 0, 0.0);
+        G.setElement(1, 1, 1.0);
+    }
+
+    else{
+        double r = std::sqrt(a*a + b*b);
+        double c = a / r;
+        double s = -b / r;
+        
+        G.setElement(0, 0, c);
+        G.setElement(0, 1, -s);
+        G.setElement(1, 0, s);
+        G.setElement(1, 1, c);
+    }
     return G;
 }
 
@@ -37,23 +47,21 @@ std::tuple<Matrix, Matrix> qr_decomposition(const Matrix& A) {
 
 int main() {
     // Create a 3x3 matrix A
-    Matrix A = {
-        {1.0, 2.0, 3.0},
-        {4.0, 5.0, 6.0},
-        {7.0, 8.0, 9.0}
-    };
-
+    Matrix A("../data/input/bcsstm01.mtx");
+    // Matrix A = {
+    //     {1.0, 2.0, 3.0},
+    //     {0.0, 0.0, 0.0},
+    //     {0.0, 0.0, 0.0}
+    // };
     std::cout << "Matrix A:\n";
     A.display();
 
-
     // Perform QR decomposition
     auto [Q, R] = qr_decomposition(A);
-
-    // Print the results
     std::cout << "Matrix Q:\n";
     Q.display();
     std::cout << "Matrix R:\n";
     R.display();
+
     return 0;
 }

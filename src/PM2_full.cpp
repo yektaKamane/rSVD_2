@@ -1,4 +1,4 @@
-#include "PM2_full.hpp"
+#include "../include/powerMethod/PM2_full.hpp"
 
 void PM(Mat &A, Mat &B, double &sigma, Vec &u, Vec &v) {
     // Generate a random initial guess x0

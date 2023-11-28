@@ -1,6 +1,9 @@
 // matrix.cpp
 #include "../../include/dataStructure/matrix.hpp"
 #include <iostream>
+#include <fstream>
+#include <sstream>
+#include <string>
 
 Matrix::Matrix(int rows, int cols) : rows(rows), cols(cols) {
     data.resize(rows, std::vector<double>(cols, 0.0));
@@ -11,6 +14,7 @@ Matrix::Matrix(const std::vector<std::vector<double>>& input_data) : data(input_
     cols = (rows > 0) ? static_cast<int>(data[0].size()) : 0;
 }
 
+// initialize by immediate values
 Matrix::Matrix(std::initializer_list<std::initializer_list<double>> values) {
     // Determine the number of rows and columns
     rows = static_cast<int>(values.size());
@@ -29,6 +33,49 @@ Matrix::Matrix(std::initializer_list<std::initializer_list<double>> values) {
         }
         ++i;
     }
+}
+
+// initialize by file
+Matrix::Matrix(const std::string& filename) {
+    // Open the .mtx file
+    std::ifstream file(filename);
+    if (!file.is_open()) {
+        std::cerr << "Error opening file: " << filename << std::endl;
+        // Handle the error as needed, e.g., throw an exception
+        return;
+    }
+
+    // Skip the header lines
+    std::string line;
+    std::getline(file, line); // Skip the first line
+    std::getline(file, line); // Skip the second line
+
+    // Read the matrix dimensions from the third line
+    std::istringstream dimensions(line);
+    dimensions >> rows >> cols;
+
+    // Resize the matrix data vector
+    data.resize(rows, std::vector<double>(cols));
+
+    // Read the matrix values from the file
+    for (int i = 0; i < rows; ++i) {
+        int row, col;
+        double value;
+        file >> row >> col >> value;
+
+        // Check if the read operation was successful
+        if (!file) {
+            std::cerr << "Error reading data from file: " << filename << std::endl;
+            // Handle the error as needed, e.g., throw an exception
+            return;
+        }
+
+        // Set the matrix element
+        setElement(row - 1, col - 1, value);  // Adjust indices to start from 0
+    }
+
+    // Close the file
+    file.close();
 }
 
 int Matrix::getRows() const {
