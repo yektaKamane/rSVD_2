@@ -1,5 +1,5 @@
 
-#include "PM.hpp"
+#include "../include/powerMethod/PM.hpp"
 
 void power_method(mat& m, vet& s, mat& U, mat& V) {
     if(m.norm()==0){

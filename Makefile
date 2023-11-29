@@ -29,7 +29,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 # Rule to build test executables
 $(BIN_DIR)/%: $(TESTS_DIR)/%.cpp $(OBJ_FILES)
 	@mkdir -p $(@D)
-	$(CXX) $(CXXFLAGS) $^ -o $@
+	$(CXX) $(CXXFLAGS) $(if $(filter profile,$(MAKECMDGOALS)),-pg) $< $(filter %.o,$^) -o $@
 
 # Target to build and run tests without profiling
 test: $(TEST_BINS)
@@ -41,14 +41,9 @@ profile: CXXFLAGS += -pg
 profile: test
 	@gprof $(BIN_DIR)/QRTest > profile_output.txt
 
-# Clean up generated files
+# Clean up generated files and remove files inside /data/output/
 clean:
 	rm -rf $(OBJ_DIR) $(BIN_DIR)
+	rm -f data/output/*
 
 .PHONY: all test profile clean
-
-
-
-# make test
-# make test profile
-# make clean

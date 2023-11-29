@@ -1,4 +1,4 @@
-// vector.h
+
 #pragma once
 
 #include <vector>
