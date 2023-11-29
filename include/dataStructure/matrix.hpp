@@ -17,6 +17,9 @@ public:
     Matrix(std::initializer_list<std::initializer_list<double>> values);
     Matrix(const std::string& filename);
 
+    // write to file method
+    void writeNonZeroElementsToCSR(const std::string& filename) const;
+
     // Getter methods
     int getRows() const;
     int getCols() const;
@@ -28,9 +31,6 @@ public:
     // Matrix operations
     Matrix transpose() const;
     Matrix multiply(const Matrix& other) const;
-
-    // Additional operations specific to the SVD implementation
-    // ...
 
     // Overloaded operators for convenience
     Matrix operator+(const Matrix& other) const;

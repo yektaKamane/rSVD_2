@@ -45,23 +45,17 @@ std::tuple<Matrix, Matrix> qr_decomposition(const Matrix& A) {
     return std::make_tuple(Q, R);
 }
 
-int main() {
-    // Create a 3x3 matrix A
-    Matrix A("../data/input/bcsstm01.mtx");
-    // Matrix A = {
-    //     {1.0, 2.0, 3.0},
-    //     {0.0, 0.0, 0.0},
-    //     {0.0, 0.0, 0.0}
-    // };
-    std::cout << "Matrix A:\n";
-    A.display();
+// int main() {
+//     Matrix A("../data/input/bcsstm01.mtx");
+//     A.display();
+//     A.writeNonZeroElementsToCSR("../data/output/bcsstm01_output.mtx");
 
-    // Perform QR decomposition
-    auto [Q, R] = qr_decomposition(A);
-    std::cout << "Matrix Q:\n";
-    Q.display();
-    std::cout << "Matrix R:\n";
-    R.display();
+//     // Perform QR decomposition
+//     auto [Q, R] = qr_decomposition(A);
+//     // std::cout << "Matrix Q:\n";
+//     // Q.display();
+//     // std::cout << "Matrix R:\n";
+//     // R.display();
 
-    return 0;
-}
+//     return 0;
+// }

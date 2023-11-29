@@ -4,6 +4,7 @@
 #include <fstream>
 #include <sstream>
 #include <string>
+#include <iomanip>
 
 Matrix::Matrix(int rows, int cols) : rows(rows), cols(cols) {
     data.resize(rows, std::vector<double>(cols, 0.0));
@@ -78,6 +79,40 @@ Matrix::Matrix(const std::string& filename) {
     // Close the file
     file.close();
 }
+
+void Matrix::writeNonZeroElementsToCSR(const std::string& filename) const {
+    std::ofstream outFile(filename);
+    if (!outFile.is_open()) {
+        std::cerr << "Error opening file: " << filename << std::endl;
+        return;
+    }
+
+    // Count the number of nonzero elements
+    int nnz = 0;
+    for (int i = 0; i < rows; ++i) {
+        for (int j = 0; j < cols; ++j) {
+            if (data[i][j] != 0.0) {
+                ++nnz;
+            }
+        }
+    }
+
+    // Write the Matrix Market header
+    outFile << "%%MatrixMarket matrix coordinate real general\n";
+    outFile << rows << " " << cols << " " << nnz << "\n";
+
+    // Write the nonzero elements in CSR format
+    for (int i = 0; i < rows; ++i) {
+        for (int j = 0; j < cols; ++j) {
+            if (data[i][j] != 0.0) {
+                outFile << i + 1 << " " << j + 1 << " " << std::setprecision(15) << data[i][j] << "\n";
+            }
+        }
+    }
+
+    outFile.close();
+}
+
 
 
 int Matrix::getRows() const {

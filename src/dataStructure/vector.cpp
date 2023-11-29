@@ -1,5 +1,5 @@
 // vector.cpp
-#include "vector.h"
+#include "../../include/dataStructure/vector.hpp"
 #include <iostream>
 
 Vector::Vector(int size) : size(size) {
