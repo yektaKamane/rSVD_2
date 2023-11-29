@@ -1,6 +1,6 @@
 // matrix.h
 #pragma once
-
+#include <string>
 #include <vector>
 
 class Matrix {
@@ -12,6 +12,10 @@ private:
 public:
     Matrix(int rows, int cols);
     Matrix(const std::vector<std::vector<double>>& input_data);
+
+    // Constructor for initialization similar to Eigen
+    Matrix(std::initializer_list<std::initializer_list<double>> values);
+    Matrix(const std::string& filename);
 
     // Getter methods
     int getRows() const;
@@ -34,6 +38,10 @@ public:
     Matrix operator*(double scalar) const;
     // ...
 
+    static Matrix identity(int size);
+    void setBlock(int row, int col, const Matrix& block);
+    Matrix getBlock(int row, int col, int numRows, int numCols) const;
+    
     // Display method
     void display() const;
 };

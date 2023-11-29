@@ -45,20 +45,21 @@ Matrix::Matrix(const std::string& filename) {
         return;
     }
 
-    // Skip the header lines
-    std::string line;
-    std::getline(file, line); // Skip the first line
-    std::getline(file, line); // Skip the second line
+    // Read the header line (skip it for now)
+    std::string header;
+    std::getline(file, header);
 
-    // Read the matrix dimensions from the third line
-    std::istringstream dimensions(line);
-    dimensions >> rows >> cols;
+    // Read the matrix dimensions from the second line
+    file >> rows >> cols;
 
     // Resize the matrix data vector
-    data.resize(rows, std::vector<double>(cols));
+    data.resize(rows, std::vector<double>(cols, 0.0));
 
     // Read the matrix values from the file
-    for (int i = 0; i < rows; ++i) {
+    int numNonZero;
+    file >> numNonZero;
+
+    for (int i = 0; i < numNonZero; ++i) {
         int row, col;
         double value;
         file >> row >> col >> value;
@@ -77,6 +78,7 @@ Matrix::Matrix(const std::string& filename) {
     // Close the file
     file.close();
 }
+
 
 int Matrix::getRows() const {
     return rows;
