@@ -2,6 +2,7 @@
 #include <tuple>
 #include <cmath>
 #include "../include/dataStructure/matrix.hpp"
+#include "../include/QRdecomposition/QR.hpp"
 
 Matrix givens_rotation(double a, double b) {
     
