@@ -44,7 +44,7 @@ public:
     static Matrix identity(int size);
     void setBlock(int row, int col, const Matrix& block);
     Matrix getBlock(int row, int col, int numRows, int numCols) const;
-    
+    Matrix gaussianRandomMatrix(int &rows, int &cols) const;
     // Display method
     void display() const;
 };
