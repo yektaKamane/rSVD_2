@@ -5,6 +5,7 @@
 #include <sstream>
 #include <string>
 #include <iomanip>
+#include <random>
 
 Matrix::Matrix(int rows, int cols) : rows(rows), cols(cols) {
     data.resize(rows, std::vector<double>(cols, 0.0));
@@ -231,3 +232,22 @@ Matrix Matrix::getBlock(int row, int col, int numRows, int numCols) const {
 
     return block;
 }
+Matrix Matrix::gaussianRandomMatrix(int &rows, int &cols) const
+{
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::normal_distribution<double> distribution(0.0, 1.0);
+        Matrix data(rows, cols);
+        std::vector<double> randomValues(rows * cols);
+        for (double& val : randomValues) {
+            val = distribution(gen);
+        }
+
+        int index = 0;
+        for (int i = 0; i < rows; ++i) {
+            for (int j = 0; j < cols; ++j) {
+                data.setElement(i, j, randomValues[index++]);
+            }
+        }
+        return data;
+    }
