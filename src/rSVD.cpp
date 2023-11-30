@@ -15,7 +15,7 @@
     // code to generate Gaussian random matrix G
     Matrix G=gaussianRandomMatrix(n,m);
     // (2) Form the sample matrix Y = A G.
-    Matrix Y = A * G;
+    Matrix Y = A.multiply(G);
 
     // (3) Orthonormalize the columns of the sample matrix Q = orth(Y).
     std::tuple<Matrix, Matrix> qr_result = qr_decomposition(Y);
@@ -23,14 +23,14 @@
 
     // Stage B
     // (4) Form the (k + p) × n matrix B = Q∗A.
-    Matrix B = Q.transpose() * A;
+    Matrix B = (Q.transpose()).multiply(A);
 
     // (5) Form the SVD of the small matrix B: B = UDV ˆ
     Matrix U_hat;
     PM(B, U_hat, S, V);
 
     // (6) Form U = QUˆ
-    U = Q * U_hat;
+    U = Q.multiply(U_hat);
     // END
 }
     
