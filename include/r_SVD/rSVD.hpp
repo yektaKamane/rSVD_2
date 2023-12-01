@@ -10,10 +10,6 @@ using mat=Eigen::MatrixXd;
 using mat=Eigen::MatrixXd;
 using vet=Eigen::VectorXd;
  void rSVD(mat& A, mat&U, vet& S, mat& V);
-=======
-void rSVD(mat& A, mat& U, vet& S, mat& V);
->>>>>>> e112dab1a4634a2f23b9ecacc9ce0d6b5d6bc4ff
-
 
 
 #endif
