@@ -1,48 +1,58 @@
-#include <iostream>
-#include <tuple>
-#include <cmath>
-#include "../include/dataStructure/matrix.hpp"
 #include "../include/QRdecomposition/QR.hpp"
+#include <iostream>
+#include <cmath>
+#include <Eigen/Dense>
+#include <Eigen/Sparse>
+#include <unsupported/Eigen/SparseExtra>
 
-Matrix givens_rotation(double a, double b) {
+Eigen::MatrixXd givens_rotation(double a, double b) {
     
-    Matrix G(2, 2);
+    Eigen::MatrixXd G(2, 2);
+    double c = 1.0;
+    double s = 0;
 
-    if (b == 0.0){
-        G.setElement(0, 0, 1.0);
-        G.setElement(0, 1, 0.0);
-        G.setElement(1, 0, 0.0);
-        G.setElement(1, 1, 1.0);
-    }
-
-    else{
+    if (b != 0){
         double r = std::sqrt(a*a + b*b);
-        double c = a / r;
-        double s = -b / r;
-        
-        G.setElement(0, 0, c);
-        G.setElement(0, 1, -s);
-        G.setElement(1, 0, s);
-        G.setElement(1, 1, c);
+        c = a / r;
+        s = -b / r;
     }
+    G << c, -s,
+         s, c;
+
     return G;
 }
 
-std::tuple<Matrix, Matrix> qr_decomposition(const Matrix& A) {
-    int m = A.getRows();
-    int n = A.getCols();
+std::tuple<Eigen::MatrixXd, Eigen::MatrixXd> qr_decomposition(const Eigen::MatrixXd& A) {
+    int m = A.rows();
+    int n = A.cols();
 
-    Matrix Q = Matrix::identity(m);
-    Matrix R = A;
+    Eigen::MatrixXd Q = Eigen::MatrixXd::Identity(m, m);
+    Eigen::MatrixXd R = A;
 
     for (int j = 0; j < n; ++j) {
         for (int i = m - 1; i > j; --i) {
-            Matrix G = givens_rotation(R.getElement(i - 1, j), R.getElement(i, j));
-            R.setBlock(i - 1, j, G.multiply(R.getBlock(i - 1, j, 2, n - j)));
-            Q.setBlock(0, i - 1, Q.getBlock(0, i - 1, m, 2).multiply(G.transpose()));
+            Eigen::MatrixXd G = givens_rotation(R(i - 1, j), R(i, j));
+            R.block(i - 1, j, 2, n - j) = G * R.block(i - 1, j, 2, n - j);
+            Q.block(0, i - 1, m, 2) = Q.block(0, i - 1, m, 2) * G.transpose();
         }
     }
 
     return std::make_tuple(Q, R);
 }
 
+// int main() {
+    
+//     Eigen::SparseMatrix<double> sparseMatrix;
+//     Eigen::loadMarket(sparseMatrix, "../data/input/bcsstm01.mtx");
+//     Eigen::MatrixXd A = Eigen::MatrixXd(sparseMatrix);
+
+//     // Perform QR decomposition
+//     auto [Q, R] = qr_decomposition(A);
+
+//     // Print the results
+//     std::cout << "Matrix A:" << std::endl << A << std::endl << std::endl;
+//     std::cout << "Matrix Q:" << std::endl << Q << std::endl << std::endl;
+//     std::cout << "Matrix R:" << std::endl << R << std::endl;
+
+//     return 0;
+// }
