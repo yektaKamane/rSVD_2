@@ -1,15 +1,19 @@
 #include "../include/QRdecomposition/QR.hpp"
-#include "../include/dataStructure/matrix.hpp"
 #include <iostream>
 #include <fstream>
 #include <sstream>
 #include <string>
 #include <iomanip>
+#include <chrono>
 #include <iostream>
 #include <filesystem> // C++17 or later
+#include <Eigen/Dense>
+#include <Eigen/Sparse>
+#include <unsupported/Eigen/SparseExtra>
 
 // The main function for running the tests
 int main(int /*argc*/, char** argv) {
+    std::cout << "*** QR test ***\n" << std::endl;
     // Get the path to the directory where the executable is located
     std::filesystem::path exePath = std::filesystem::absolute(argv[0]);
     std::filesystem::path exeDir = exePath.parent_path();
@@ -40,18 +44,33 @@ int main(int /*argc*/, char** argv) {
         std::filesystem::path inputFilePath = inputDir / fileName;
 
         // Load matrix from the input file
-        Matrix A(inputFilePath.string());
+        Eigen::SparseMatrix<double> sparseMatrix;
+        Eigen::loadMarket(sparseMatrix, inputFilePath.string());
+        Eigen::MatrixXd A = Eigen::MatrixXd(sparseMatrix);
+
+        // start calculating the time
+        auto start = std::chrono::high_resolution_clock::now();
 
         // Perform QR decomposition
         auto [Q, R] = qr_decomposition(A);
+
+        // Record the end time
+        auto end = std::chrono::high_resolution_clock::now();
+        // Calculate the duration
+        std::chrono::duration<double> duration = end - start;
+        // Print the duration in seconds
+        std::cout << "Dataset: " << fileName << "\n";
+        std::cout << "Size: " << A.rows() << ", " << A.cols() << "\n";
+        std::cout << "Execution time: " << duration.count() << " seconds" << "\n";
+        std::cout << "-------------------------\n" << std::endl;;
 
         // Construct the full paths for output files
         std::filesystem::path outputQFilePath = outputDir / ("Q_" + fileName + "_output.mtx");
         std::filesystem::path outputRFilePath = outputDir / ("R_" + fileName + "_output.mtx");
 
         // Write Q and R matrices to output files
-        Q.writeNonZeroElementsToCSR(outputQFilePath.string());
-        R.writeNonZeroElementsToCSR(outputRFilePath.string());
+        Eigen::saveMarket(Q, outputQFilePath.string());
+        Eigen::saveMarket(R, outputRFilePath.string());
     }
 
     return 0;

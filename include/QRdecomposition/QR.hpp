@@ -1,14 +1,11 @@
 #ifndef QR_H
 #define QR_H
 
-#include <iostream>
-#include <tuple>
-#include <cmath>
-#include "../include/dataStructure/matrix.hpp"
+#include <Eigen/Dense>
+#include <Eigen/Sparse>
+#include <unsupported/Eigen/SparseExtra>
 
-
-
-Matrix givens_rotation(double a, double b);
-std::tuple<Matrix, Matrix> qr_decomposition(const Matrix& A);
+Eigen::MatrixXd givens_rotation(double a, double b);
+std::tuple<Eigen::MatrixXd, Eigen::MatrixXd> qr_decomposition(const Eigen::MatrixXd& A);
 
 #endif
