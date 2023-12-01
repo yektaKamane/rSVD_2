@@ -6,7 +6,7 @@
 #include "../QRdecomposition/QR.hpp"
 #include <Eigen/Dense>
 
-<<<<<<< HEAD
+using mat=Eigen::MatrixXd;
 using mat=Eigen::MatrixXd;
 using vet=Eigen::VectorXd;
  void rSVD(mat& A, mat&U, vet& S, mat& V);
