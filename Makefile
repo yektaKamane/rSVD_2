@@ -1,13 +1,16 @@
 CXX := g++
-CXXFLAGS := -std=c++17 -Wall -Wextra -Iinclude
+CXXFLAGS := -std=c++17 -Wall -Wextra -Iinclude -I ${mkEigenInc}
 
 SRC_DIR := src
 TESTS_DIR := tests
 OBJ_DIR := obj
 BIN_DIR := bin
 
-# Find all source files in the source directory
-SRC_FILES := $(wildcard $(SRC_DIR)/**/*.cpp) $(SRC_DIR)/QR.cpp
+# List of files to exclude
+EXCLUDE_FILES := PM.cpp PM2_full.cpp PM2_one_iteration.cpp
+
+# Find all source files in the source directory excluding specific files
+SRC_FILES := $(filter-out $(addprefix $(SRC_DIR)/,$(EXCLUDE_FILES)), $(wildcard $(SRC_DIR)/*.cpp))
 
 # Create a list of object files based on the source files
 OBJ_FILES := $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(SRC_FILES))

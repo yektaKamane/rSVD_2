@@ -1,8 +1,6 @@
 
-#ifndef MATRIX_HPP
-#define MATRIX_HPP
-
 #pragma once
+
 #include <string>
 #include <vector>
 
@@ -48,5 +46,3 @@ public:
     // Display method
     void display() const;
 };
-
-#endif // MATRIX_HPP

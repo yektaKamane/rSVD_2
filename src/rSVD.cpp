@@ -1,8 +1,6 @@
 #include "../include/r_SVD/rSVD.hpp"
 
 #include "../include/powerMethod/PM2_full.hpp"
-#include "../include/dataStructure/matrix.hpp"
-#include "../include/dataStructure/vector.hpp"
 #include "../include/QRdecomposition/QR.hpp"
 
 
