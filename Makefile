@@ -7,16 +7,18 @@ OBJ_DIR := obj
 BIN_DIR := bin
 
 # List of files to exclude
-EXCLUDE_FILES := PM.cpp PM2_full.cpp PM2_one_iteration.cpp
+EXCLUDE_FILES_SRC := rSVD.cpp PM3.cpp PM.cpp PM2_full.cpp PM2_one_iteration.cpp 
 
 # Find all source files in the source directory excluding specific files
-SRC_FILES := $(filter-out $(addprefix $(SRC_DIR)/,$(EXCLUDE_FILES)), $(wildcard $(SRC_DIR)/*.cpp))
+SRC_FILES := $(filter-out $(addprefix $(SRC_DIR)/,$(EXCLUDE_FILES_SRC)), $(wildcard $(SRC_DIR)/*.cpp))
 
 # Create a list of object files based on the source files
 OBJ_FILES := $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(SRC_FILES))
 
+EXCLUDE_FILES_TST := PM3Test.cpp PMTest2.cpp rSVD_test.cpp
+
 # Test source files
-TEST_SRC_FILES := $(wildcard $(TESTS_DIR)/*.cpp)
+TEST_SRC_FILES := $(filter-out $(addprefix $(TESTS_DIR)/,$(EXCLUDE_FILES_TST)), $(wildcard $(TESTS_DIR)/*.cpp))
 
 # Test executable names
 TEST_BINS := $(patsubst $(TESTS_DIR)/%.cpp,$(BIN_DIR)/%,$(TEST_SRC_FILES))

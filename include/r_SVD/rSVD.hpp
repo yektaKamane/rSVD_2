@@ -2,7 +2,7 @@
 #define rSVD_H
 
 
- void rSVD(const Matrix& A, Matrix& U, Vector& S, Matrix& V);
+void rSVD(mat& A, mat& U, vet& S, mat& V);
 
 
 
