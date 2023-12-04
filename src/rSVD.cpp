@@ -26,20 +26,7 @@
     mat U_hat;
     SVD(B, S, U_hat, V);
 
-    // (6) Form U = QUˆ
-    U = Q * U_hat;
+    // // (6) Form U = QUˆ
+    // U = Q * U_hat;
     // END
-}
-
-int main(){
-    mat A = mat::Random(3, 3);
-    mat U;
-    vet S;
-    mat V;
-    rSVD(A, U, S, V);
-    std::cout << "A = \n" << A << std::endl;
-    std::cout << "U = \n" << U << std::endl;
-    std::cout << "S = \n" << S << std::endl;
-    std::cout << "V = \n" << V << std::endl;
-    return 0;
 }
