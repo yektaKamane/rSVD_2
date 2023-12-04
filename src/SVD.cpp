@@ -16,6 +16,8 @@ void SVD(Mat &A, Vec &sigma, Mat &U, Mat &V) {
         PM(A, B, sigma(i), u, v);
         A -= sigma(i)*u*v.transpose();
         B = A.transpose()*A;
+        U.col(i) = u;
+        VT.row(i) = v;
     }
 
     V = VT.transpose(); // VT is the transpose of V
