@@ -1,5 +1,5 @@
 CXX := g++
-CXXFLAGS := -std=c++17 -Wall -Wextra -Iinclude -I ${mkEigenInc}
+CXXFLAGS := -Wall -Wextra -Iinclude -I ${mkEigenInc}
 
 SRC_DIR := src
 TESTS_DIR := tests
@@ -7,7 +7,7 @@ OBJ_DIR := obj
 BIN_DIR := bin
 
 # List of files to exclude
-EXCLUDE_FILES_SRC := rSVD.cpp PM3.cpp PM.cpp PM2_full.cpp PM2_one_iteration.cpp 
+EXCLUDE_FILES_SRC := PM3.cpp PM.cpp PM2_full.cpp PM2_one_iteration.cpp 
 
 # Find all source files in the source directory excluding specific files
 SRC_FILES := $(filter-out $(addprefix $(SRC_DIR)/,$(EXCLUDE_FILES_SRC)), $(wildcard $(SRC_DIR)/*.cpp))
