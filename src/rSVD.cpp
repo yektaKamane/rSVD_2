@@ -1,5 +1,5 @@
 #include "../include/r_SVD/rSVD.hpp"
-#include "../include/powerMethod/PM.hpp"
+#include "../include/powerMethod/SVD.hpp"
 #include "../include/QRdecomposition/QR.hpp"
 
 
