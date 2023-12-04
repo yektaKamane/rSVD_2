@@ -1,5 +1,5 @@
 #include "../include/r_SVD/rSVD.hpp"
-#include "../include/powerMethod/PM.hpp"
+#include "../include/powerMethod/SVD.hpp"
 #include "../include/QRdecomposition/QR.hpp"
 
 
@@ -24,7 +24,7 @@
 
     // (5) Form the SVD of the small matrix B: B = UDV ˆ
     mat U_hat;
-    power_method(B, S, U_hat, V);
+    SVD(B, S, U_hat, V);
 
     // (6) Form U = QUˆ
     U = Q * U_hat;
