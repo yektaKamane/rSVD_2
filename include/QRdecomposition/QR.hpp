@@ -5,7 +5,13 @@
 #include <Eigen/Sparse>
 #include <unsupported/Eigen/SparseExtra>
 
-Eigen::MatrixXd givens_rotation(double a, double b);
-std::tuple<Eigen::MatrixXd, Eigen::MatrixXd> qr_decomposition(const Eigen::MatrixXd& A);
+using namespace std;
+using namespace Eigen;
+
+using Mat = MatrixXd;
+using Vec = VectorXd;
+
+Mat givens_rotation(double a, double b);
+void qr_decomposition(const Mat &A, Mat &Q, Mat &R);
 
 #endif

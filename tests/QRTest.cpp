@@ -45,14 +45,20 @@ int main(int /*argc*/, char** argv) {
 
         // Load matrix from the input file
         Eigen::SparseMatrix<double> sparseMatrix;
+        
         Eigen::loadMarket(sparseMatrix, inputFilePath.string());
         Eigen::MatrixXd A = Eigen::MatrixXd(sparseMatrix);
+        if (fileName == "simple.mtx") std::cout << A << std::endl;
 
         // start calculating the time
         auto start = std::chrono::high_resolution_clock::now();
 
         // Perform QR decomposition
-        auto [Q, R] = qr_decomposition(A);
+        int m = A.rows();
+        int n = A.cols();
+        Mat Q = Mat::Identity(m, n);
+        Mat R = A;
+        qr_decomposition(A, Q, R);
 
         // Record the end time
         auto end = std::chrono::high_resolution_clock::now();
