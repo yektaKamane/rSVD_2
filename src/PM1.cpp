@@ -2,7 +2,7 @@
 
 void PM(Mat &A, Mat &B, double &sigma, Vec &u, Vec &v) {
     // Generate a random initial guess x0
-    Vec x0 = Vec::Zero(A.cols());
+    Vec x0 = Vec::Zero(A.cols()); // To multiply B with x0
 
     random_device rd;
     mt19937 gen(rd());
