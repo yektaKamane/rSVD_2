@@ -1,5 +1,5 @@
 CXX := g++
-CXXFLAGS := -Wall -Wextra -Iinclude -I ${mkEigenInc}
+CXXFLAGS := -fopenmp -Wall -Wextra -Iinclude -I ${mkEigenInc}
 
 SRC_DIR := src
 TESTS_DIR := tests

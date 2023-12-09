@@ -4,7 +4,6 @@
 
 void intermediate_step(Mat &A,Mat &Q,Mat &Omega,int &l,int &q){
     
-    
     Mat Y0 = A * Omega;
     Mat Q0(Y0.rows(), Y0.rows());
     Mat R0(Y0.rows(), Y0.cols());
