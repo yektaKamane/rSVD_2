@@ -1,17 +1,24 @@
-
-#ifndef PM_HPP
-#define PM_HPP
+#ifndef PM_H
+#define PM_H
 
 #include <iostream>
+#include <fstream>
+#include <random>
 #include <Eigen/Dense>
 #include <Eigen/Sparse>
-#include <random>
-#include <cmath>
-#include <fstream>
+#include <unsupported/Eigen/SparseExtra>
+
+using namespace std;
+using namespace Eigen;
+
+using Mat = MatrixXd;
+using Vec = VectorXd;
+using SpMat = SparseMatrix<double>;
+
+void PM(Mat &A, Mat &B, double &sigma, Vec &u, Vec &v);
+
+// void SVD(Mat &A, Vec &sigma, Mat &U, Mat &V);
+
+#endif
 
 
-using mat = Eigen::MatrixXd;
-using vet = Eigen::VectorXd;
-void power_method(mat& m, vet& s, mat& U, mat& V);
-
-#endif 

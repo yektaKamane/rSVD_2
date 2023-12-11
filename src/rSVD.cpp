@@ -5,19 +5,31 @@
 void intermediate_step(Mat &A,Mat &Q,Mat &Omega,int &l,int &q){
     
     Mat Y0 = A * Omega;
-    Mat Q0(Y0.rows(), Y0.rows());
+    Mat Q0 (Y0.rows(), Y0.rows());
     Mat R0(Y0.rows(), Y0.cols());
     qr_decomposition(Y0, Q0, R0);
 
-    Mat Qj,Yej,Qej,Yj,Rej,Rj; 
+    // Mat Qj, Yej, Qej, Yj, Rej, Rj; 
+
+    // revise later
+    Mat Yej(A.cols(), Q0.cols());
+    Mat Qej(Yej.rows(), Yej.cols());
+    Mat Rej(Yej.cols(), Yej.cols());
+    Mat Yj(A.cols(), Q0.cols());
+    Mat Qj(Q.rows(), Q.cols());
+    Mat Rj(Yj.rows(), Yj.cols());
     
     for (int j = 1; j <= q; j++) {
         Yej = A.transpose() * Q0;
         
+        Rej = Yej;
+        Qej = Mat::Identity(Yej.rows(), Yej.cols());
         qr_decomposition(Yej, Qej, Rej);
 
         Yj = A * Qej;
         
+        Rej = Yej;
+        Qej = Mat::Identity(Yej.rows(), Yej.cols());
         qr_decomposition(Yj, Qj, Rj);
         
     }
@@ -27,7 +39,7 @@ void intermediate_step(Mat &A,Mat &Q,Mat &Omega,int &l,int &q){
 }
 
 
- void rSVD(mat& A, mat& U, vet& S, mat& V) {
+ void rSVD(Mat& A, Mat& U, Vet& S, Mat& V) {
     // Stage A
     // (1) Form an n × (k + p) Gaussian random matrix G.
     int m=A.rows();
@@ -48,8 +60,8 @@ void intermediate_step(Mat &A,Mat &Q,Mat &Omega,int &l,int &q){
     }
     int q=2;
     
-    Mat Q(m,m);
-    intermediate_step(A,Q,Omega,n,q);
+    Mat Q(m, m);
+    intermediate_step(A, Q, Omega, n, q);
     
 
     // Stage B
@@ -60,7 +72,7 @@ void intermediate_step(Mat &A,Mat &Q,Mat &Omega,int &l,int &q){
     Mat U_hat(U.rows(), U.cols());
     //std::cout << "U_hat = \n" << U_hat << std::endl;
     int min= B.rows() < B.cols() ? B.rows() : B.cols();
-    SVD(B, S, U_hat, V,min);
+    SVD(B, S, U_hat, V, min);
 
     // // (6) Form U = QUˆ
     U = Q * U_hat;
