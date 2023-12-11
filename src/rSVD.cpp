@@ -8,34 +8,18 @@ void intermediate_step(Mat &A,Mat &Q,Mat &Omega,int &l,int &q){
     Mat Q0 (Y0.rows(), Y0.rows());
     Mat R0(Y0.rows(), Y0.cols());
     qr_decomposition(Y0, Q0, R0);
-
-    // Mat Qj, Yej, Qej, Yj, Rej, Rj; 
-
-    // revise later
-    Mat Yej(A.cols(), Q0.cols());
-    Mat Qej(Yej.rows(), Yej.cols());
-    Mat Rej(Yej.cols(), Yej.cols());
-    Mat Yj(A.cols(), Q0.cols());
-    Mat Qj(Q.rows(), Q.cols());
-    Mat Rj(Yj.rows(), Yj.cols());
     
     for (int j = 1; j <= q; j++) {
-        Yej = A.transpose() * Q0;
+        Y0 = A.transpose() * Q0;
         
-        Rej = Yej;
-        Qej = Mat::Identity(Yej.rows(), Yej.cols());
-        qr_decomposition(Yej, Qej, Rej);
+        qr_decomposition(Y0, Q0, R0);
 
-        Yj = A * Qej;
+        Y0 = A * Q0;
         
-        Rej = Yej;
-        Qej = Mat::Identity(Yej.rows(), Yej.cols());
-        qr_decomposition(Yj, Qj, Rj);
+        qr_decomposition(Y0, Q0, R0);
         
     }
-
-    // (7) Q = Qq
-    Q = Qj;
+    Q = Q0;
 }
 
 

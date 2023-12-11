@@ -15,7 +15,7 @@ SRC_FILES := $(filter-out $(addprefix $(SRC_DIR)/,$(EXCLUDE_FILES_SRC)), $(wildc
 # Create a list of object files based on the source files
 OBJ_FILES := $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(SRC_FILES))
 
-EXCLUDE_FILES_TST := PM3Test.cpp PMTest2.cpp SVD_test.cpp PMTest3.cpp PMTest.cpp QRTest.cpp
+EXCLUDE_FILES_TST := PM3Test.cpp PMTest2.cpp SVD_test.cpp PMTest3.cpp PMTest.cpp QRTest.cpp rSVD_test.cpp
 
 # Test source files
 TEST_SRC_FILES := $(filter-out $(addprefix $(TESTS_DIR)/,$(EXCLUDE_FILES_TST)), $(wildcard $(TESTS_DIR)/*.cpp))
@@ -44,7 +44,7 @@ test: $(TEST_BINS)
 # Target to build and run tests with profiling
 profile: CXXFLAGS += -pg
 profile: test
-	@gprof $(BIN_DIR)/QRTest > profile_output.txt
+	@gprof $(BIN_DIR)/rSVD_test2 > profile_output.txt
 
 # Clean up generated files and remove files inside /data/output/
 clean:

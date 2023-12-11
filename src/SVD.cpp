@@ -10,7 +10,7 @@ void SVD(Mat &A, Vec &sigma, Mat &U, Mat &V, const int dim) {
     Vec u = Vec::Zero(A.rows());
     Vec v = Vec::Zero(A.cols());
     
-    for (int i=0; i<dim; i++) {
+    for (unsigned int i=0; i<dim; i++) {
         u = U.col(i);
         // v = VT.row(i);
         // v = VT.col(i);

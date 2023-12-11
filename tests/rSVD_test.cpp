@@ -27,16 +27,17 @@ int main(){
     rSVD(A, U, S, V);
     std::cout<<"--RSVD TEST--"<<std::endl;
     // std::cout << "A = \n" << A << std::endl;
-     std::cout << "U = \n" << U << std::endl;
-     std::cout << "S = \n" << S << std::endl;
-     std::cout << "V = \n" << V << std::endl;
+    //  std::cout << "U = \n" << U << std::endl;
+    //  std::cout << "S = \n" << S << std::endl;
+    //  std::cout << "V = \n" << V << std::endl;
     
-     Eigen::MatrixXd diagonalMatrix = S.asDiagonal();
+    Mat diagonalMatrix = S.asDiagonal();
 
     Mat A_2(n, n);
     A_2 = U * diagonalMatrix;
-    A_2 = A_2 * V.transpose();
-    //std::cout << "A_2 = \n" << A_2 << std::endl;
+    A_2 = A_2 * V;
+
+    // std::cout << "A_2 = \n" << A_2 << std::endl;
 
     Mat diff = A - A_2;
     double norm_of_difference = (A - A_2).norm();
