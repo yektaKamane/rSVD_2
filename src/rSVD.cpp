@@ -59,7 +59,8 @@ void intermediate_step(Mat &A,Mat &Q,Mat &Omega,int &l,int &q){
     // (5) Form the SVD of the small matrix B: B = UDV ˆ
     Mat U_hat(U.rows(), U.cols());
     //std::cout << "U_hat = \n" << U_hat << std::endl;
-    SVD(B, S, U_hat, V);
+    int min= B.rows() < B.cols() ? B.rows() : B.cols();
+    SVD(B, S, U_hat, V,min);
 
     // // (6) Form U = QUˆ
     U = Q * U_hat;
