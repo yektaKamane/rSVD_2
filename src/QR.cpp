@@ -20,6 +20,8 @@ void qr_decomposition(const MatrixXd &A, MatrixXd &Q, MatrixXd &R) {
     int m = A.rows();
     int n = A.cols();
     Matrix2d G;
+    Q = Eigen::MatrixXd::Identity(m, m);
+    R = A;
 
     for (int j = 0; j < n; ++j) {
         for (int i = m - 1; i > j; --i) {
