@@ -18,7 +18,7 @@ Given a matrix $ A \in \mathbb{R}^{m \times n} $, the randomized SVD aims to app
 $$ A \approx U \Sigma V^T $$
 
 Where:
-- $ U $ is the left singular vector matrix of size $ m \times k $,
+- $U$ is the left singular vector matrix of size $ m \times k $,
 - $ \Sigma $ is the diagonal matrix of singular values of size $ k \times k $,
 - $ V^T $ is the transposed right singular vector matrix of size $ k \times n $.
 
