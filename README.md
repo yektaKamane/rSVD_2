@@ -7,7 +7,13 @@ The project emphasizes the use of randomization as a powerful tool for low-rank 
 
 ## Introduction
 
-mathematical modeling and formulas
+The Randomized Singular Value Decomposition (rSVD) is a method for approximating the singular value decomposition of a matrix. This technique is particularly useful for large matrices, where traditional SVD methods may be computationally expensive. Randomized SVD provides an efficient and scalable approach to decomposing a matrix into its singular value, left singular vector, and right singular vector components.
+
+### Mathematical Formulation
+Given a matrix $$ A \in \mathbb{R}^{m \times n} $$, the randomized SVD aims to approximate the singular value decomposition as follows:
+
+Given a matrix \( A \in \mathbb{R}^{m \times n} \)
+
 
 ## Installation
 
