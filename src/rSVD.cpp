@@ -2,21 +2,21 @@
 #include "../include/powerMethod/SVD.hpp"
 #include "../include/QRdecomposition/QR.hpp"
 
-void intermediate_step(Mat &A,Mat &Q,Mat &Omega,int &l,int &q){
+void intermediate_step(Mat &A, Mat &Q, Mat &Omega, int &l,int &q){
     
     Mat Y0 = A * Omega;
     Mat Q0 (Y0.rows(), Y0.rows());
     Mat R0(Y0.rows(), Y0.cols());
-    qr_decomposition(Y0, Q0, R0);
+    qr_decomposition_reduced(Y0, Q0, R0);
     
     for (int j = 1; j <= q; j++) {
         Y0 = A.transpose() * Q0;
         
-        qr_decomposition(Y0, Q0, R0);
+        qr_decomposition_reduced(Y0, Q0, R0);
 
         Y0 = A * Q0;
         
-        qr_decomposition(Y0, Q0, R0);
+        qr_decomposition_reduced(Y0, Q0, R0);
         
     }
     Q = Q0;
