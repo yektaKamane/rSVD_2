@@ -54,9 +54,12 @@ int main(int /*argc*/, char** argv) {
         auto start = std::chrono::high_resolution_clock::now();
 
         // Perform rSVD decomposition
-        int n = A.rows();
-        Mat U = Mat::Zero(n, n);
-        Vet S = Vet::Zero(n);
+        int m = A.rows();
+        int n = A.cols();
+        // int k = m/2;
+
+        Mat U = Mat::Zero(m, n);
+        Vet S = Vet::Zero(k);
         Mat V = Mat::Zero(n, n);
         rSVD(A, U, S, V);
 

@@ -22,7 +22,7 @@ int main(int /*argc*/, char** argv) {
 
     // Input and output directories
     std::filesystem::path inputDir = root / "data" / "input";
-    std::filesystem::path outputDir = root / "data" / "output";
+    std::filesystem::path outputDir = root / "data" / "output" / "QR" / "my";
 
     // Create output directory if it doesn't exist
     if (!std::filesystem::exists(outputDir))
@@ -39,7 +39,7 @@ int main(int /*argc*/, char** argv) {
     }
 
     // Loop over file names
-    for (const auto& fileName : fileNames) {
+    for (auto& fileName : fileNames) {
         // Construct the full path for input file
         std::filesystem::path inputFilePath = inputDir / fileName;
 
@@ -73,9 +73,17 @@ int main(int /*argc*/, char** argv) {
         std::cout << "Execution time: " << duration.count() << " seconds" << "\n";
         std::cout << "-------------------------\n" << std::endl;;
 
+        size_t lastDotPos = fileName.find_last_of('.');
+
+        // Check if a dot was found and extract the substring before it
+        if (lastDotPos != std::string::npos) 
+        {
+            auto filenameWithoutExtension = fileName.substr(0, lastDotPos);
+            fileName = filenameWithoutExtension;
+        }
         // Construct the full paths for output files
-        std::filesystem::path outputQFilePath = outputDir / ("Q_" + fileName + "_output.mtx");
-        std::filesystem::path outputRFilePath = outputDir / ("R_" + fileName + "_output.mtx");
+        std::filesystem::path outputQFilePath = outputDir / (fileName + "_Q.mtx");
+        std::filesystem::path outputRFilePath = outputDir / (fileName + "_R.mtx");
 
         // Write Q and R matrices to output files
         Eigen::saveMarket(Q, outputQFilePath.string());

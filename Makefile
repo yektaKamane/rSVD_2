@@ -49,6 +49,6 @@ profile: test
 # Clean up generated files and remove files inside /data/output/
 clean:
 	rm -rf $(OBJ_DIR) $(BIN_DIR)
-	rm -f data/output/*
+	rm -rf data/output/QR/*
 
 .PHONY: all test profile clean

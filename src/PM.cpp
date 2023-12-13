@@ -12,7 +12,6 @@ void PM(Mat &A, Mat &B, double &sigma, Vec &u, Vec &v) {
         x0(i) = distribution(gen);
     }
     x0.normalize();
-    // cout << "Check norm of x0: " << x0.norm() << endl;
 
     // Define the number of iterations
     double epsilon = 1.e-10;
@@ -38,27 +37,5 @@ void PM(Mat &A, Mat &B, double &sigma, Vec &u, Vec &v) {
 
 }
 
-/*
-void SVD(Mat &A, Vec &sigma, Mat &U, Mat &V) {
-    Mat VT = Mat::Zero(A.cols(), A.cols()); // VT is the transpose of V
-
-    // Define the matrix B = A^T*A
-    Mat B = A.transpose()*A;
-
-    // Define auxiliary vectors u and v
-    Vec u = Vec::Zero(A.rows());
-    Vec v = Vec::Zero(A.cols());
-    
-    for (int i=0; i<A.cols(); i++) {
-        u = U.col(i);
-        v = VT.row(i);
-        PM(A, B, sigma(i), u, v);
-        A -= sigma(i)*u*v.transpose();
-        B = A.transpose()*A;
-    }
-
-    V = VT.transpose(); // VT is the transpose of V
-}
-*/
 
 
