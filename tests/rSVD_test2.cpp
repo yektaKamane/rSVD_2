@@ -1,4 +1,4 @@
-#include "../include/QRdecomposition/QR.hpp"
+#include "../include/r_SVD/rSVD.hpp"
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -13,7 +13,7 @@
 
 // The main function for running the tests
 int main(int /*argc*/, char** argv) {
-    std::cout << "*** QR test ***\n" << std::endl;
+    std::cout << "*** rSVD test ***\n" << std::endl;
     // Get the path to the directory where the executable is located
     std::filesystem::path exePath = std::filesystem::absolute(argv[0]);
     std::filesystem::path exeDir = exePath.parent_path();
@@ -48,38 +48,47 @@ int main(int /*argc*/, char** argv) {
         
         Eigen::loadMarket(sparseMatrix, inputFilePath.string());
         Eigen::MatrixXd A = Eigen::MatrixXd(sparseMatrix);
-        if (fileName == "simple.mtx")
-        { 
-            std::cout << A << std::endl;
-        }
+        if (fileName == "simple.mtx") std::cout << A << std::endl;
 
         // start calculating the time
         auto start = std::chrono::high_resolution_clock::now();
 
-        // Perform QR decomposition
-        int m = A.rows();
-        int n = A.cols();
-        Mat Q = Mat::Identity(m, std::min(m, n));
-        Mat R = A;
-        qr_decomposition_reduced(A, Q, R);
+        // Perform rSVD decomposition
+        int n = A.rows();
+        Mat U = Mat::Zero(n, n);
+        Vet S = Vet::Zero(n);
+        Mat V = Mat::Zero(n, n);
+        rSVD(A, U, S, V);
 
         // Record the end time
         auto end = std::chrono::high_resolution_clock::now();
         // Calculate the duration
         std::chrono::duration<double> duration = end - start;
+
+        Mat diagonalMatrix = S.asDiagonal();
+        Mat A_2(n, n);
+        A_2 = U * diagonalMatrix;
+        A_2 = A_2 * V;
+
+        Mat diff = A - A_2;
+        double norm_of_difference = (A - A_2).norm();
+
         // Print the duration in seconds
         std::cout << "Dataset: " << fileName << "\n";
         std::cout << "Size: " << A.rows() << ", " << A.cols() << "\n";
         std::cout << "Execution time: " << duration.count() << " seconds" << "\n";
+        std::cout << "norm of diff : " << norm_of_difference << "\n";
         std::cout << "-------------------------\n" << std::endl;;
 
         // Construct the full paths for output files
-        std::filesystem::path outputQFilePath = outputDir / ("Q_" + fileName + "_output.mtx");
-        std::filesystem::path outputRFilePath = outputDir / ("R_" + fileName + "_output.mtx");
+        std::filesystem::path outputUFilePath = outputDir / ("U_" + fileName + "_output.mtx");
+        std::filesystem::path outputSFilePath = outputDir / ("S_" + fileName + "_output.mtx");
+        std::filesystem::path outputVFilePath = outputDir / ("V_" + fileName + "_output.mtx");
 
         // Write Q and R matrices to output files
-        Eigen::saveMarket(Q, outputQFilePath.string());
-        Eigen::saveMarket(R, outputRFilePath.string());
+        Eigen::saveMarket(U, outputUFilePath.string());
+        Eigen::saveMarket(S, outputSFilePath.string());
+        Eigen::saveMarket(V, outputVFilePath.string());
     }
 
     return 0;

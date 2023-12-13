@@ -3,28 +3,44 @@
 
 int main() {
 
-    int m = 3;
-    int n = 3;
+    int m = 5;
+    int n = 10;
     Mat A = Mat::Random(m, n); // Mat::Random(m, n) generate a random matrix with entries in [-1, 1]
 
-    Vec sigma = Vec::Zero(A.cols());
-    Mat U = Mat::Zero(A.rows(), A.cols()); // U m*n
-    Mat V = Mat::Zero(A.cols(), A.cols()); // V n*n
+    const int dim = (A.rows() < A.cols()) ? A.rows() : A.cols();
+    Vec sigma = Vec::Zero(dim);
+    Mat U = Mat::Zero(A.rows(), dim); // U m*n or m*m
+    Mat V = Mat::Zero(dim, A.cols()); // V n*n or m*n
 
-    SVD(A, sigma, U, V);
+    SVD(A, sigma, U, V, dim);
 
-    cout << "FULL SVD" << endl;
+    cout << "THIN SVD" << endl;
     cout << "Singular values: " << endl << sigma << endl;
-    cout << "U: " << endl << U << endl;
-    cout << "V: " << endl << V << endl;
+    cout << "U = " << endl << U << endl;
+    cout << "V = " << endl << V << endl;
 
     // Export the singular values as csv file
-    // ofstream filecsv("sigma.csv");
-    // if (filecsv.is_open()) {
-    //     Eigen::IOFormat fmt(Eigen::FullPrecision, Eigen::DontAlignCols, "\t", "\n");
-    //     filecsv << sigma.format(fmt);
-    //     filecsv.close();
-    // }
+    ofstream filecsv("sigma.csv");
+    if (filecsv.is_open()) {
+        Eigen::IOFormat fmt(Eigen::FullPrecision, Eigen::DontAlignCols, "\t", "\n");
+        filecsv << sigma.format(fmt);
+        filecsv.close();
+    }
+
+    /*
+    // Export A as csv file
+    ofstream filecsv("Arandom.csv");
+    if (filecsv.is_open()) {
+        Eigen::IOFormat fmt(Eigen::FullPrecision, Eigen::DontAlignCols, "\t", "\n");
+        filecsv << A.format(fmt);
+        filecsv.close();
+    }
+
+    // Export B = A^T*A as mtx file in Matrix Market format
+    SpMat BS = B.sparseView(); // sparseView() returns a sparse view of the dense matrix B, it does not convert B into a sparse matrix
+    string matrixFileOut("./Brandom.mtx");
+    saveMarket(BS, matrixFileOut);
+    */
 
     return 0;
 }

@@ -12,6 +12,7 @@ using Mat = MatrixXd;
 using Vec = VectorXd;
 
 Mat givens_rotation(double a, double b);
-void qr_decomposition(const Mat &A, Mat &Q, Mat &R);
+void qr_decomposition_full(const Mat &A, Mat &Q, Mat &R);
+void qr_decomposition_reduced(const Mat &A, Mat &Q, Mat &R);
 
 #endif
