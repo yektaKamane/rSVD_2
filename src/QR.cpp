@@ -46,7 +46,7 @@ void qr_decomposition_reduced(const Mat &A, Mat &Q, Mat &R)
     Matrix2d G;
 
     Q = Mat::Identity(m, std::min(m, n));
-    R = A;
+    R = A.topRows(std::min(m, n));
 
 
     for (int j = 0; j < std::min(m - 1, n); ++j) {

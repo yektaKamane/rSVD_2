@@ -60,7 +60,7 @@ int main(int /*argc*/, char** argv) {
         int m = A.rows();
         int n = A.cols();
         Mat Q = Mat::Identity(m, std::min(m, n));
-        Mat R = A;
+        Mat R = A.topRows(std::min(m, n));
         qr_decomposition_reduced(A, Q, R);
 
         // Record the end time
