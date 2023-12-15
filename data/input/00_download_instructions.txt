@@ -1,0 +1,9 @@
+wget https://suitesparse-collection-website.herokuapp.com/MM/HB/494_bus.tar.gz
+tar -xf 494_bus.tar.gz
+mv 494_bus/494_bus.mtx .
+rm -rf 494_bus 494_bus.tar.gz
+
+wget https://suitesparse-collection-website.herokuapp.com/MM/HB/beause.tar.gz
+tar -xf beause.tar.gz
+mv beause/beause.mtx .
+rm -rf beause beause.tar.gz
