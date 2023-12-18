@@ -50,5 +50,6 @@ profile: test
 clean:
 	rm -rf $(OBJ_DIR) $(BIN_DIR)
 	rm -rf data/output/QR/*
+	rm -rf data/output/*
 
 .PHONY: all test profile clean
