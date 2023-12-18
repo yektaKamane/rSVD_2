@@ -7,7 +7,7 @@ OBJ_DIR := obj
 BIN_DIR := bin
 
 # List of files to exclude
-EXCLUDE_FILES_SRC := rSVD.cpp
+EXCLUDE_FILES_SRC :=
 
 # Find all source files in the source directory excluding specific files
 SRC_FILES := $(filter-out $(addprefix $(SRC_DIR)/,$(EXCLUDE_FILES_SRC)), $(wildcard $(SRC_DIR)/*.cpp))
