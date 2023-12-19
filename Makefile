@@ -37,7 +37,7 @@ $(BIN_DIR)/%: $(TESTS_DIR)/%.cpp $(OBJ_FILES)
 	$(CXX) $(CXXFLAGS) $(if $(filter profile,$(MAKECMDGOALS)),-pg) $< $(filter %.o,$^) -o $@
 
 # Target to build and run tests without profiling
-test: $(TEST_BINS)
+test: $(TEST_BINS) create_directories
 	@echo "Running tests..."
 	@$(foreach test, $(TEST_BINS), ./$(test);)
 
@@ -52,4 +52,9 @@ clean:
 	rm -rf data/output/QR/*
 	rm -rf data/output/*
 
-.PHONY: all test profile clean
+# Target to create output directories
+create_directories:
+	mkdir -p ./data/output/QR
+	mkdir -p ./data/output/rSVD
+
+.PHONY: all test profile clean create_directories
