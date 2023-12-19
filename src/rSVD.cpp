@@ -40,14 +40,31 @@ void intermediate_step(Mat &A, Mat &Q, Mat &Omega, int &l, int &q){
     Mat Omega = Mat::Zero(n, l);
 
     // Create a random number generator for a normal distribution
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::normal_distribution<double> distribution(0.0, 1.0);
+    #pragma omp parallel num_threads(4)
+    {
+        int threadID = omp_get_thread_num();
 
-    // Fill the matrix with values from a standard normal distribution
-    for (int i = 0; i < Omega.rows(); ++i) {
-        for (int j = 0; j < Omega.cols(); ++j) {
-            Omega(i, j) = distribution(gen);
+        // Generate a unique seed for each thread using thread ID
+        std::random_device rd;
+        std::seed_seq seed{ rd() + threadID, rd() + threadID, rd() + threadID, rd() + threadID };
+        std::mt19937 gen(seed);
+        std::normal_distribution<double> dist(0.0, 1.0);
+
+        // Determine the range of rows for each thread to fill
+        int chunkSize = n / omp_get_num_threads();
+        int startRow = threadID * chunkSize;
+        int endRow = (threadID + 1) * chunkSize;
+        if (threadID == omp_get_num_threads() - 1) {
+            endRow = n;  // Last thread handles any remaining rows
+        }
+
+        
+        // Fill the corresponding rows of Omega with random numbers using this thread's seed
+        #pragma omp for
+        for (int i = startRow; i < endRow; ++i) {
+            for (int j = 0; j < k; ++j) {
+                Omega(i, j) = dist(gen);
+            }
         }
     }
     int q=2;
