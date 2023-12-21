@@ -1,4 +1,5 @@
 import os
+import matplotlib.pyplot as plt
 
 def read_matrix_file(file_path):
     with open(file_path, 'r') as file:
@@ -9,7 +10,7 @@ def read_matrix_file(file_path):
 
     return dimensions, matrix_data
 
-def compare_matrices(matrix1_path, matrix2_path):
+def compare_matrices(matrix1_path, matrix2_path, results):
     matrix1_dimensions, matrix1_data = read_matrix_file(matrix1_path)
     matrix2_dimensions, matrix2_data = read_matrix_file(matrix2_path)
 
@@ -29,9 +30,8 @@ def compare_matrices(matrix1_path, matrix2_path):
 
     if differences:
         variance = sum(differences) / len(differences)
-        print(f"{matrix1_path} and {matrix2_path} have differences with a variance of {variance}.")
-    else:
-        print(f"{matrix1_path} and {matrix2_path} are identical.")
+        dimension = cell2[2]
+        results.append((dimension, variance))
 
 def main():
     directory1 = "../data/output/rSVD/my/"
@@ -40,11 +40,15 @@ def main():
     files1 = [file for file in os.listdir(directory1) if file.endswith(".mtx")]
     files2 = [file for file in os.listdir(directory2) if file.endswith(".mtx")]
 
+    results = []
+
     for file1, file2 in zip(files1, files2):
         matrix1_path = os.path.join(directory1, file1)
         matrix2_path = os.path.join(directory2, file2)
 
-        compare_matrices(matrix1_path, matrix2_path)
+        compare_matrices(matrix1_path, matrix2_path, results)
+
+    print(results[0])
 
 if __name__ == "__main__":
     main()
