@@ -3,7 +3,7 @@
 
 #include "PM.hpp"
 
-void SVD(Mat &A, Vec &sigma, Mat &U, Mat &V, const int dim);
+void SVD(Mat &A, Vec &sigma, Mat &U, Mat &V, size_t dim);
 
 #endif
 
