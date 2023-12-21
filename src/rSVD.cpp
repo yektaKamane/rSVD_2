@@ -2,6 +2,8 @@
 #include "../include/powerMethod/SVD.hpp"
 #include "../include/QRdecomposition/QR.hpp"
 
+#include "omp.h"
+
 void intermediate_step(Mat &A, Mat &Q, Mat &Omega, size_t &l, size_t &q){
     
     Mat Y0 = A * Omega; // Y0 = A * Omega = (m*n) * (n*l) = (m*l)
@@ -33,14 +35,14 @@ void intermediate_step(Mat &A, Mat &Q, Mat &Omega, size_t &l, size_t &q){
     size_t m=A.rows();
     size_t n=A.cols();
 
-    size_t k = 10; // numerical rank (we need an algorithm to find it) or target rank
+    size_t k = A.cols()/2; // numerical rank (we need an algorithm to find it) or target rank
     size_t p = 5; // oversampling parameter, usually it is set to 5 or 10
     size_t l = k + p;
 
     Mat Omega = Mat::Zero(n, l);
 
     // Create a random number generator for a normal distribution
-    #pragma omp parallel num_threads(4)
+    #pragma omp parallel num_threads(4) // CHANGE IF NEEDED
     {
         size_t threadID = omp_get_thread_num();
 
