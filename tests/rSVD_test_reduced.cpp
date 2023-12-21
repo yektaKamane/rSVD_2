@@ -53,11 +53,11 @@ int main(int /*argc*/, char** argv) {
         auto start = std::chrono::high_resolution_clock::now();
 
         // Perform QR decomposition
-        int m = A.rows();
-        int n = A.cols();
-        int k = 10; // numerical rank (we need an algorithm to find it) or target rank
-        int p = 5; // oversampling parameter, usually it is set to 5 or 10
-        int l = k + p;
+        size_t m = A.rows();
+        size_t n = A.cols();
+        size_t k = 10; // numerical rank (we need an algorithm to find it) or target rank
+        size_t p = 5; // oversampling parameter, usually it is set to 5 or 10
+        size_t l = k + p;
         Mat U = Mat::Zero(A.rows(), l);
         Vet S = Vet::Zero(l);
         Mat V = Mat::Zero(l, A.cols());
