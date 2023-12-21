@@ -2,7 +2,7 @@
 #include "../include/powerMethod/SVD.hpp"
 #include "../include/QRdecomposition/QR.hpp"
 
-void intermediate_step(Mat &A, Mat &Q, Mat &Omega, size_t &l, size_t &q){
+void intermediate_step(Mat &A, Mat &Q, Mat &Omega, int &l, int &q){
     
     Mat Y0 = A * Omega; // Y0 = A * Omega = (m*n) * (n*l) = (m*l)
     Mat Q0(A.rows(), l); // Q0 = (m*l)
@@ -13,7 +13,7 @@ void intermediate_step(Mat &A, Mat &Q, Mat &Omega, size_t &l, size_t &q){
     Mat Qtilde(A.cols(), l); // Qtilde = (n*l)
     // It is useless to initialize Rtilde because it is still (l*l) and it can be overwritten
     
-    for (size_t j = 1; j <= q; j++) {
+    for (int j = 1; j <= q; j++) {
         Ytilde = A.transpose() * Q0; // Y0 = A.transpose() * Q0 = (n*m) * (m*l) = (n*l)
         
         qr_decomposition_reduced(Ytilde, Qtilde, R0);
@@ -30,19 +30,19 @@ void intermediate_step(Mat &A, Mat &Q, Mat &Omega, size_t &l, size_t &q){
  void rSVD(Mat& A, Mat& U, Vet& S, Mat& V) {
     // Stage A
     // (1) Form an n × (k + p) Gaussian random matrix Omega
-    size_t m=A.rows();
-    size_t n=A.cols();
+    int m=A.rows();
+    int n=A.cols();
 
-    size_t k = A.cols()/2; // numerical rank (we need an algorithm to find it) or target rank
-    size_t p = 5; // oversampling parameter, usually it is set to 5 or 10
-    size_t l = k + p;
+    int k = 10; // numerical rank (we need an algorithm to find it) or target rank
+    int p = 5; // oversampling parameter, usually it is set to 5 or 10
+    int l = k + p;
 
     Mat Omega = Mat::Zero(n, l);
 
     // Create a random number generator for a normal distribution
-    #pragma omp parallel num_threads(4) // CHANGE IF NEEDED
+    #pragma omp parallel num_threads(4)
     {
-        size_t threadID = omp_get_thread_num();
+        int threadID = omp_get_thread_num();
 
         // Generate a unique seed for each thread using thread ID
         std::random_device rd;
@@ -51,9 +51,9 @@ void intermediate_step(Mat &A, Mat &Q, Mat &Omega, size_t &l, size_t &q){
         std::normal_distribution<double> dist(0.0, 1.0);
 
         // Determine the range of rows for each thread to fill
-        size_t chunkSize = n / omp_get_num_threads();
-        size_t startRow = threadID * chunkSize;
-        size_t endRow = (threadID + 1) * chunkSize;
+        int chunkSize = n / omp_get_num_threads();
+        int startRow = threadID * chunkSize;
+        int endRow = (threadID + 1) * chunkSize;
         if (threadID == omp_get_num_threads() - 1) {
             endRow = n;  // Last thread handles any remaining rows
         }
@@ -61,13 +61,13 @@ void intermediate_step(Mat &A, Mat &Q, Mat &Omega, size_t &l, size_t &q){
 
         // Fill the corresponding rows of Omega with random numbers using this thread's seed
         #pragma omp for
-        for (size_t i = startRow; i < endRow; ++i) {
-            for (size_t j = 0; j < k; ++j) {
+        for (int i = startRow; i < endRow; ++i) {
+            for (int j = 0; j < k; ++j) {
                 Omega(i, j) = dist(gen);
             }
         }
     }
-    size_t q=2;
+    int q=2;
     
     Mat Q = Mat::Zero(m, l);
     intermediate_step(A, Q, Omega, l, q);
@@ -77,7 +77,7 @@ void intermediate_step(Mat &A, Mat &Q, Mat &Omega, size_t &l, size_t &q){
     Mat B = Q.transpose() * A; // B = Q.transpose() * A = (l*m) * (m*n) = (l*n)
 
     // (5) Form the SVD of the small matrix B
-    size_t min= B.rows() < B.cols() ? B.rows() : B.cols();
+    int min= B.rows() < B.cols() ? B.rows() : B.cols();
     Mat Utilde = Mat::Zero(B.rows(), min);
     //std::cout << "Utilde = \n" << Utilde << std::endl;
     SVD(B, S, Utilde, V, min);

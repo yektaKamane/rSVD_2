@@ -36,19 +36,40 @@ def save_matrix_market(matrix, output_path):
                 value = matrix[i, j]
                 file.write(f"{i+1} {j+1} {value:.18e}\n")
 
+def randomized_SVD(A, k):
+  G=np.random.randn(A.shape[1], k)
+
+  Y=np.matmul(A,G)
+  Q,_=np.linalg.qr(Y)
+
+  B=np.matmul(Q.T,A)
+
+  Uh,s,VT= np.linalg.svd(B,full_matrices=False)
+#   print(Uh.shape)
+
+  U=np.matmul(Q,Uh)
+#   print(U.shape)
+#   print(s.shape)
+#   print(VT.shape)
+
+  return U,s,VT 
+    
+
 def process_matrix(matrix_path):
     # Read the matrix from the Matrix Market file
     sparse_matrix = mmread(matrix_path)
     dense_matrix = sparse_matrix.toarray()
 
-    k = 15
+    # rank
+    k = 35
+
     # Perform SVD
-    U, S, V = randomized_svd(dense_matrix, n_components=k)
+    U, S, V = randomized_SVD(dense_matrix, k)
 
     # Save Q matrix in Matrix Market format
     matrix_name = os.path.splitext(os.path.basename(matrix_path))[0]
-    S_output_path = os.path.join(output_directory, f"{matrix_name}_S.mtx")
-    save_vector_market(S, S_output_path)
+    # S_output_path = os.path.join(output_directory, f"{matrix_name}_S.mtx")
+    # save_vector_market(S, S_output_path)
 
     # Save R matrix in Matrix Market format
     U_output_path = os.path.join(output_directory, f"{matrix_name}_U.mtx")
