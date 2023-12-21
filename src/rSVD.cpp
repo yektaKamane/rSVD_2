@@ -2,8 +2,6 @@
 #include "../include/powerMethod/SVD.hpp"
 #include "../include/QRdecomposition/QR.hpp"
 
-#include "omp.h"
-
 void intermediate_step(Mat &A, Mat &Q, Mat &Omega, size_t &l, size_t &q){
     
     Mat Y0 = A * Omega; // Y0 = A * Omega = (m*n) * (n*l) = (m*l)
