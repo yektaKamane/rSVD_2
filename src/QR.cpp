@@ -1,4 +1,4 @@
-#include "../include/QRdecomposition/QR.hpp"
+#include "QRdecomposition/QR.hpp"
 #include <iostream>
 #include <cmath>
 #include <Eigen/Dense>

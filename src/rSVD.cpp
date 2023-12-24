@@ -1,6 +1,6 @@
-#include "../include/r_SVD/rSVD.hpp"
-#include "../include/powerMethod/SVD.hpp"
-#include "../include/QRdecomposition/QR.hpp"
+#include "r_SVD/rSVD.hpp"
+#include "powerMethod/SVD.hpp"
+#include "QRdecomposition/QR.hpp"
 
 void intermediate_step(Mat &A, Mat &Q, Mat &Omega, int &l, int &q){
     
