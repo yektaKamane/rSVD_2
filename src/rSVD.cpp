@@ -1,6 +1,6 @@
-#include "r_SVD/rSVD.hpp"
-#include "powerMethod/SVD.hpp"
-#include "QRdecomposition/QR.hpp"
+#include "rSVD.hpp"
+#include "SVD.hpp"
+#include "QR.hpp"
 
 void intermediate_step(Mat &A, Mat &Q, Mat &Omega, int &l, int &q){
     
@@ -27,7 +27,7 @@ void intermediate_step(Mat &A, Mat &Q, Mat &Omega, int &l, int &q){
 }
 
 
- void rSVD(Mat& A, Mat& U, Vet& S, Mat& V) {
+ void rSVD(Mat& A, Mat& U, Vec& S, Mat& V) {
     // Stage A
     // (1) Form an n × (k + p) Gaussian random matrix Omega
     int m=A.rows();

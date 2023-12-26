@@ -1,7 +1,7 @@
-#include "powerMethod/SVD.hpp"
+#include "SVD.hpp"
 
 void SVD(Mat &A, Vec &sigma, Mat &U, Mat &V, const int dim) {
-    // Mat VT = Mat::Zero(A.cols(), dim); // VT is the transpose of V
+
     Mat VT = Mat::Zero(dim, A.cols()); // VT is the transpose of V
 
     // Define the matrix B = A^T*A
@@ -20,5 +20,4 @@ void SVD(Mat &A, Vec &sigma, Mat &U, Mat &V, const int dim) {
     }
 
     V = VT.transpose(); // V is the transpose of VT
-
 }

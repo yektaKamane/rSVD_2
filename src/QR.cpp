@@ -1,4 +1,5 @@
-#include "QRdecomposition/QR.hpp"
+#include "QR.hpp"
+#include "matrixOperations.hpp"
 #include <iostream>
 #include <cmath>
 #include <Eigen/Dense>
@@ -53,7 +54,11 @@ void qr_decomposition_reduced(const Mat &A, Mat &Q, Mat &R)
         for (int i = n - 1; i > j; --i) {
             if (R(i, j) != 0) {
                 givens_rotation(R(i - 1, j), R(i, j), G);
+                // change this multiplication
                 R.block(i - 1, j, 2, n - j) = G * R.block(i - 1, j, 2, n - j);
+                // R.block(i - 1, j, 2, n - j) = manualMatrixMultiply(G, R.block(i - 1, j, 2, n - j));
+                // this one as well
+                // the transpose operation too
                 Q.middleCols(i - 1, 2) *= G.transpose();
             }
         }

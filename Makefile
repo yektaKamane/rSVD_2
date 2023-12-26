@@ -15,7 +15,7 @@ SRC_FILES := $(filter-out $(addprefix $(SRC_DIR)/,$(EXCLUDE_FILES_SRC)), $(wildc
 # Create a list of object files based on the source files
 OBJ_FILES := $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(SRC_FILES))
 
-EXCLUDE_FILES_TST := PMTest.cpp rSVD_test_reduced.cpp
+EXCLUDE_FILES_TST := PMTest.cpp QRTest.cpp small_test_svd.cpp
 
 # Test source files
 TEST_SRC_FILES := $(filter-out $(addprefix $(TESTS_DIR)/,$(EXCLUDE_FILES_TST)), $(wildcard $(TESTS_DIR)/*.cpp))
@@ -56,5 +56,6 @@ clean:
 create_directories:
 	mkdir -p ./data/output/QR
 	mkdir -p ./data/output/rSVD
+	mkdir -p ./data/output/SVD
 
 .PHONY: all test profile clean create_directories
