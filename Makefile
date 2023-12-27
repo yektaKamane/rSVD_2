@@ -1,4 +1,4 @@
-CXX := g++
+CXX := mpic++
 CXXFLAGS := -fopenmp -Wall -Wextra -Iinclude -I ${mkEigenInc}
 
 SRC_DIR := src
@@ -15,7 +15,7 @@ SRC_FILES := $(filter-out $(addprefix $(SRC_DIR)/,$(EXCLUDE_FILES_SRC)), $(wildc
 # Create a list of object files based on the source files
 OBJ_FILES := $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(SRC_FILES))
 
-EXCLUDE_FILES_TST := QRTest.cpp small_test_svd.cpp PMTest.cpp small_qr.cpp small_rsvd.cpp 
+EXCLUDE_FILES_TST := rSVD_test.cpp small_test_svd.cpp PMTest.cpp small_qr.cpp small_rsvd.cpp
 
 # Test source files
 TEST_SRC_FILES := $(filter-out $(addprefix $(TESTS_DIR)/,$(EXCLUDE_FILES_TST)), $(wildcard $(TESTS_DIR)/*.cpp))
@@ -39,7 +39,7 @@ $(BIN_DIR)/%: $(TESTS_DIR)/%.cpp $(OBJ_FILES)
 # Target to build and run tests without profiling
 test: $(TEST_BINS) create_directories
 	@echo "Running tests..."
-	@$(foreach test, $(TEST_BINS), ./$(test);)
+	@$(foreach test, $(TEST_BINS), mpirun --allow-run-as-root -np 1 ./$(test);)
 
 # Target to build and run tests with profiling
 profile: CXXFLAGS += -pg

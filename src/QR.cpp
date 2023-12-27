@@ -53,8 +53,8 @@ void qr_decomposition_reduced(const Mat &A, Mat &Q, Mat &R)
         for (int i = m - 1; i > j; --i) {
             if (R_temp(i, j) != 0) {
                 givens_rotation(R_temp(i - 1, j), R_temp(i, j), G);
-                R_temp.block(i - 1, j, 2, n - j) = G * R_temp.block(i - 1, j, 2, n - j);
-                Q_temp.leftCols(m).middleCols(i - 1, 2) *= G.transpose();
+                R_temp.block(i - 1, j, 2, n - j) = manualMatrixMultiply(G, R_temp.block(i - 1, j, 2, n - j));
+                Q_temp.leftCols(m).middleCols(i - 1, 2) = manualMatrixMultiply(Q_temp.leftCols(m).middleCols(i - 1, 2), G.transpose());
 
             }
         }
