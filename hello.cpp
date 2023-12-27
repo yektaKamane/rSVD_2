@@ -1,20 +1,45 @@
 #include <mpi.h>
 #include <iostream>
+#include <Eigen/Dense>
+#include <chrono>
 
-int main(int argc, char** argv) {
-    // Initialize MPI
-    MPI_Init(&argc, &argv);
+int main() {
+    // Define a matrix A of size 3x3
+    // Initialize random seed
+    srand(time(NULL));
 
-    // Get the total number of processes and the rank of the current process
-    int numProcesses, rank;
-    MPI_Comm_size(MPI_COMM_WORLD, &numProcesses);
-    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    // Define the size of the matrix
+    const int size = 100;
 
-    // Print "Hello, World!" from each process
-    std::cout << "Hello, World! from process " << rank << " out of " << numProcesses << " processes." << std::endl;
+    // Define a dynamic matrix A of size 10x10 and initialize with random values
+    Eigen::MatrixXd A = Eigen::MatrixXd::Random(size, size);
 
-    // Finalize MPI
-    MPI_Finalize();
+    // Define a dynamic vector b of size 10 and initialize with ones
+    Eigen::VectorXd b = Eigen::VectorXd::Ones(size);
+
+    // Define a dynamic vector c of size 10
+    Eigen::VectorXd c(size);
+
+    auto start_time = std::chrono::high_resolution_clock::now();
+
+    double sum = 0;
+    for (int i=0; i<size; i++){
+        sum = 0;
+        for (int j=0; j<size; j++){
+            sum += A(i, j) * b(j);
+        }
+        c(i) = sum;
+    }
+    auto end_time = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time);
+
+
+    // Display the matrix A and vector b
+    // std::cout << "Matrix A:\n" << A << "\n\n";
+    // std::cout << "Vector b:\n" << b << "\n\n";
+    // std::cout << "Vector c:\n" << c << "\n\n";
+
+    std::cout << "Execution Time: " << duration.count() << " microseconds\n";
 
     return 0;
 }
