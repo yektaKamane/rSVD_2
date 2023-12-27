@@ -27,15 +27,15 @@ void intermediate_step(Mat &A, Mat &Q, Mat &Omega, int &l, int &q){
 }
 
 
- void rSVD(Mat& A, Mat& U, Vec& S, Mat& V) {
+ void rSVD(Mat& A, Mat& U, Vec& S, Mat& V, int l) {
     // Stage A
     // (1) Form an n × (k + p) Gaussian random matrix Omega
     int m = A.rows();
     int n = A.cols();
 
-    int k = 10; // numerical rank (we need an algorithm to find it) or target rank
-    int p = 5; // oversampling parameter, usually it is set to 5 or 10
-    int l = 2;
+    // int k = 10; // numerical rank (we need an algorithm to find it) or target rank
+    // int p = 5; // oversampling parameter, usually it is set to 5 or 10
+    // int l = k + p;
 
     Mat Omega = Mat::Zero(n, l);
 
@@ -54,7 +54,7 @@ void intermediate_step(Mat &A, Mat &Q, Mat &Omega, int &l, int &q){
     int q=2;
     Mat Q = Mat::Zero(m, l);
     intermediate_step(A, Q, Omega, l, q);
-    cout << "Q: " << Q << endl;
+    // cout << "Q: " << Q << endl;
     // Stage B
     // (4) Form the (k + p) × n matrix B = Q*A
     Mat B = Q.transpose() * A;

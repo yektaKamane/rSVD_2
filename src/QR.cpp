@@ -46,22 +46,20 @@ void qr_decomposition_reduced(const Mat &A, Mat &Q, Mat &R)
     int n = A.cols();
     Matrix2d G;
 
-    Q = Mat::Identity(m, std::min(m, n));
-    R = A.topRows(std::min(m, n));
+    Mat Q_temp = Mat::Identity(m, m);
+    Mat R_temp = A;
 
+    for (int j = 0; j < std::min(m, n); ++j) {
+        for (int i = m - 1; i > j; --i) {
+            if (R_temp(i, j) != 0) {
+                givens_rotation(R_temp(i - 1, j), R_temp(i, j), G);
+                R_temp.block(i - 1, j, 2, n - j) = G * R_temp.block(i - 1, j, 2, n - j);
+                Q_temp.leftCols(m).middleCols(i - 1, 2) *= G.transpose();
 
-    for (int j = 0; j < std::min(m - 1, n); ++j) {
-        for (int i = n - 1; i > j; --i) {
-            if (R(i, j) != 0) {
-                givens_rotation(R(i - 1, j), R(i, j), G);
-                // change this multiplication
-                R.block(i - 1, j, 2, n - j) = G * R.block(i - 1, j, 2, n - j);
-                // R.block(i - 1, j, 2, n - j) = manualMatrixMultiply(G, R.block(i - 1, j, 2, n - j));
-                // this one as well
-                // the transpose operation too
-                Q.middleCols(i - 1, 2) *= G.transpose();
             }
         }
     }
+    Q = Q_temp.leftCols(n);
+    R = R_temp.topRows(n);
 }
 

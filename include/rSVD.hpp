@@ -11,7 +11,7 @@ using Vec = Eigen::VectorXd;
 
 
 void intermediate_step(Mat &A,Mat &Q,Mat &Omega,int &l,int &q);
-void rSVD(Mat& A, Mat&U, Vec& S, Mat& V);
+void rSVD(Mat& A, Mat&U, Vec& S, Mat& V, int l);
 
 
 #endif

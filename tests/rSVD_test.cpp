@@ -55,14 +55,14 @@ int main(int /*argc*/, char** argv) {
         // Perform QR decomposition
         int m = A.rows();
         int n = A.cols();
-        int k = 10; // numerical rank (we need an algorithm to find it) or target rank
+        int k = 0; // numerical rank (we need an algorithm to find it) or target rank
         int p = 5; // oversampling parameter, usually it is set to 5 or 10
         int l = k + p;
         Mat A_copy = A;
-        Mat U = Mat::Zero(A.rows(), l);
+        Mat U = Mat::Zero(m, l);
         Vec S = Vec::Zero(l);
-        Mat V = Mat::Zero(l, A.cols());
-        rSVD(A, U, S, V);
+        Mat V = Mat::Zero(l, n);
+        rSVD(A, U, S, V, l);
 
         // Record the end time
         auto end = std::chrono::high_resolution_clock::now();
