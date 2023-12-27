@@ -96,10 +96,12 @@ int main(int /*argc*/, char** argv) {
         // Construct the full paths for output files
         std::filesystem::path outputSFilePath = outputDir / (fileName + "_S.mtx");
         std::filesystem::path outputUFilePath = outputDir / (fileName + "_U.mtx");
+        std::filesystem::path outputVFilePath = outputDir / (fileName + "_V.mtx");
 
         // Write Q and R matrices to output files
         Eigen::saveMarket(S, outputSFilePath.string());
         Eigen::saveMarket(U, outputUFilePath.string());
+        Eigen::saveMarket(V, outputVFilePath.string());
     }
 
     
