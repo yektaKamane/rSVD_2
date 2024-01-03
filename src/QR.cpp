@@ -53,7 +53,23 @@ void qr_decomposition_reduced(const Mat &A, Mat &Q, Mat &R)
         for (int i = m - 1; i > j; --i) {
             if (R_temp(i, j) != 0) {
                 givens_rotation(R_temp(i - 1, j), R_temp(i, j), G);
-                R_temp.block(i - 1, j, 2, n - j) = manualMatrixMultiply(G, R_temp.block(i - 1, j, 2, n - j));
+                
+                // R_temp.block(i - 1, j, 2, n - j) = manualMatrixMultiply(G, R_temp.block(i - 1, j, 2, n - j));
+                // this matrix block has 2 rows and n-j cols
+                int block_rows = 2;
+                int block_cols = n-j;
+                Mat temp_1(block_rows, block_cols);
+                for (int inner_i=0; inner_i<block_rows; ++inner_i){
+                    for (int inner_j=0; inner_j<block_cols; ++inner_j){
+                        double sum = 0.0;
+                        for (int k = 0; k<block_rows; ++k){
+                            sum += G(inner_i, k) * R_temp.block(i - 1, j, 2, n - j)(k, inner_j);
+                        }
+                        temp_1(inner_i, inner_j) = sum;
+                    }
+                }
+
+                R_temp.block(i - 1, j, 2, n - j) = temp_1;
                 Q_temp.leftCols(m).middleCols(i - 1, 2) = manualMatrixMultiply(Q_temp.leftCols(m).middleCols(i - 1, 2), G.transpose());
 
             }

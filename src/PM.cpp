@@ -2,10 +2,7 @@
 #include <mpi.h>
 
 void PM(Mat &A, Mat &B, double &sigma, Vec &u, Vec &v) {
-    // Adding MPI
-    // ********
-    
-    // MPI_Init(&argc, &argv);
+
     // Get the total number of processors and the rank of the current processor
     int num_procs, rank;
     MPI_Comm_size(MPI_COMM_WORLD, &num_procs);
@@ -56,8 +53,6 @@ void PM(Mat &A, Mat &B, double &sigma, Vec &u, Vec &v) {
         }
         MPI_Bcast(x0.data(), x0.size(), MPI_DOUBLE, 0, MPI_COMM_WORLD);
     }
-    // Finalize MPI
-    // MPI_Finalize();
 
     // Compute the left singlular vector
     v = x0;
