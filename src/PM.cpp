@@ -33,9 +33,6 @@ void PM(Mat &A, Mat &B, double &sigma, Vec &u, Vec &v) {
     // Divide rows of A among processors
     int rows_per_proc = B.rows() / num_procs;
     Eigen::MatrixXd local_B = B.block(rank * rows_per_proc, 0, rows_per_proc, B.cols());
-        
-    // Broadcast vector b to all processors
-    MPI_Bcast(x0.data(), x0.size(), MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
     // Compute local portion of the result vector c manually
     Eigen::VectorXd local_res(rows_per_proc);

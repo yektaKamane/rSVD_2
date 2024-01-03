@@ -1,6 +1,7 @@
 #include "rSVD.hpp"
 #include "SVD.hpp"
 #include "QR.hpp"
+#include <mpi.h>
 
 void intermediate_step(Mat &A, Mat &Q, Mat &Omega, int &l, int &q){
     

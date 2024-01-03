@@ -3,6 +3,7 @@
 #include <fstream>
 #include <sstream>
 #include <string>
+#include <mpi.h>
 #include <iomanip>
 #include <iostream>
 #include <filesystem> // C++17 or later
@@ -11,9 +12,15 @@
 
 // The main function for running the tests
 
-int main(int /*argc*/, char** argv) {
-    std::cout << "test rSVD reduced" << std::endl;
+int main(int argc, char** argv) {
 
+    MPI_Init(&argc, &argv);
+    int num_procs, rank;
+    MPI_Comm_size(MPI_COMM_WORLD, &num_procs);
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+
+    if (rank == 0) std::cout << "test rSVD reduced" << std::endl;
+    
     // Get the path to the directory where the executable is located
     std::filesystem::path exePath = std::filesystem::absolute(argv[0]);
     std::filesystem::path exeDir = exePath.parent_path();
@@ -56,7 +63,7 @@ int main(int /*argc*/, char** argv) {
         int m = A.rows();
         int n = A.cols();
         int k = 0; // numerical rank (we need an algorithm to find it) or target rank
-        int p = 5; // oversampling parameter, usually it is set to 5 or 10
+        int p = 16; // oversampling parameter, usually it is set to 5 or 10
         int l = k + p;
         Mat A_copy = A;
         Mat U = Mat::Zero(m, l);
@@ -79,11 +86,15 @@ int main(int /*argc*/, char** argv) {
         // Calculate the duration
         std::chrono::duration<double> duration = end - start;
         // Print the duration in seconds
-        std::cout << "Dataset: " << fileName << "\n";
-        std::cout << "Size: " << A.rows() << ", " << A.cols() << "\n";
-        std::cout << "Execution time: " << duration.count() << " seconds" << "\n";
-        std::cout << "norm of diff : " << norm_of_difference << "\n";
-        std::cout << "-------------------------\n" << std::endl;;
+
+        if (rank == 0){
+            std::cout << "\nDataset: " << fileName << "\n";
+            std::cout << "Size: " << A.rows() << ", " << A.cols() << "\n";
+            std::cout << "Number of Processors: " << num_procs << "\n";
+            std::cout << "Execution time: " << duration.count() << " seconds" << "\n";
+            std::cout << "norm of diff : " << norm_of_difference << "\n";
+            std::cout << "-------------------------\n" << std::endl;
+        }
 
         size_t lastDotPos = fileName.find_last_of('.');
 
@@ -104,6 +115,6 @@ int main(int /*argc*/, char** argv) {
         Eigen::saveMarket(V, outputVFilePath.string());
     }
 
-    
+    MPI_Finalize();
     return 0;
 }

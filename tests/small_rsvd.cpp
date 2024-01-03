@@ -3,6 +3,7 @@
 #include <fstream>
 #include <sstream>
 #include <string>
+#include <mpi.h>
 #include <iomanip>
 #include <iostream>
 #include <filesystem> // C++17 or later
@@ -13,9 +14,9 @@ using namespace std;
 
 // The main function for running the tests
 
-int main(int /*argc*/, char** /*argv*/) {
+int main(int argc, char** argv) {
     std::cout << "small test rSVD" << std::endl;
-
+    MPI_Init(&argc, &argv);
     Eigen::MatrixXd A(10, 10);
     A << 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
         11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
@@ -44,9 +45,9 @@ int main(int /*argc*/, char** /*argv*/) {
     Mat V = Mat::Zero(l, n);
 
     rSVD(A, U, S, V, l);
-    cout << "U: \n" << U << endl;
-    cout << "S: \n" << S << endl;
-    cout << "V: \n" << V << endl;
+    // cout << "U: \n" << U << endl;
+    // cout << "S: \n" << S << endl;
+    // cout << "V: \n" << V << endl;
 
     Mat diagonalMatrix = S.asDiagonal();
     Mat A_2(m, n);
@@ -60,6 +61,6 @@ int main(int /*argc*/, char** /*argv*/) {
     double norm_of_difference = (diff).norm();
 
     cout << "norm : " << norm_of_difference << endl;
-
+    MPI_Finalize();
     return 0;
 }
