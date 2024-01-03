@@ -2,6 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <mpi.h>
 #include <string>
 #include <iomanip>
 #include <iostream>
@@ -11,8 +12,9 @@
 
 // The main function for running the tests
 
-int main(int /*argc*/, char** argv) {
+int main(int argc, char** argv) {
     std::cout << "test SVD" << std::endl;
+    MPI_Init(&argc, &argv);
 
     // Get the path to the directory where the executable is located
     std::filesystem::path exePath = std::filesystem::absolute(argv[0]);
@@ -103,5 +105,6 @@ int main(int /*argc*/, char** argv) {
         Eigen::saveMarket(V, outputVFilePath.string());
     }
 
+    MPI_Finalize();
     return 0;
 }
