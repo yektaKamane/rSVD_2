@@ -33,12 +33,10 @@ int main() {
     auto end_time = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time);
 
-
     // Display the matrix A and vector b
     // std::cout << "Matrix A:\n" << A << "\n\n";
     // std::cout << "Vector b:\n" << b << "\n\n";
     // std::cout << "Vector c:\n" << c << "\n\n";
-
     std::cout << "Execution Time: " << duration.count() << " microseconds\n";
 
     return 0;

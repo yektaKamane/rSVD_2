@@ -16,14 +16,14 @@ int main(int argc, char** argv) {
     srand(time(NULL));
 
     // Define the size of the matrix
-    const int size = 4;
+    const int size = 100;
 
     // Define a dynamic matrix A of size 10x10 and initialize with random values
     Eigen::MatrixXd A = Eigen::MatrixXd::Random(size, size);
-    A << 1, 2, 3, 4,
-        2, 2, 2, 3,
-        1, 5, 5, 1,
-        8, 8, 1, 0;
+    // A << 1, 2, 3, 4,
+    //     2, 2, 2, 3,
+    //     1, 5, 5, 1,
+    //     8, 8, 1, 0;
 
     // Define a dynamic vector b of size 10 and initialize with ones
     Eigen::VectorXd b = Eigen::VectorXd::Ones(size);
@@ -55,9 +55,9 @@ int main(int argc, char** argv) {
 
     // Display the matrix A, vector b, and vector c
     if (rank == 0) {
-        std::cout << "Matrix A:\n" << A << "\n\n";
-        std::cout << "Vector b:\n" << b << "\n\n";
-        std::cout << "Vector c:\n" << c << "\n\n";
+        // std::cout << "Matrix A:\n" << A << "\n\n";
+        // std::cout << "Vector b:\n" << b << "\n\n";
+        // std::cout << "Vector c:\n" << c << "\n\n";
         std::cout << "Execution Time: " << duration.count() << " microseconds\n";
     }
 
