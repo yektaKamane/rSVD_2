@@ -16,21 +16,23 @@ int main(int argc, char** argv) {
     srand(time(NULL));
 
     // Define the size of the matrices
-    const int rows = 3;
-    const int cols = 3;
+    const int rows = 50;
+    const int cols = 50;
 
     // Define dynamic matrices A, B, and C of size rows x cols and initialize with values
     Eigen::MatrixXd A(rows, cols);
     Eigen::MatrixXd B(rows, cols);
     Eigen::MatrixXd C(rows, cols);        // Result matrix
 
-    A << 1, 2, 3,
-         4, 5, 6,
-         10, 8, 9;
+    A.setRandom();
+    B.setRandom();
+    // A << 1, 2, 3,
+    //      4, 5, 6,
+    //      10, 8, 9;
 
-    B << 1, 1, 1,
-         1, 5, 1,
-         1, 1, 1;
+    // B << 1, 1, 1,
+    //      1, 5, 1,
+    //      1, 1, 1;
 
     // Divide rows of A among processors
     int rows_per_proc = A.rows() / num_procs;
@@ -42,6 +44,7 @@ int main(int argc, char** argv) {
     // Broadcast vector b to all processors
     Eigen::VectorXd c(rows);
 
+    auto start_time = std::chrono::high_resolution_clock::now();
     for (int outer_index=0; outer_index<B.cols(); outer_index++){
 
         Eigen::VectorXd b(rows); 
@@ -72,13 +75,17 @@ int main(int argc, char** argv) {
         }
     }
 
+    auto end_time = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time);
     // Display the matrices A, B, and C
     if (rank == 0) {
-        std::cout << "Matrix A:\n" << A << "\n\n";
-        std::cout << "Matrix B:\n" << B << "\n\n";
-        std::cout << "Matrix C (Result):\n" << C << "\n\n";
+        // std::cout << "Matrix A:\n" << A << "\n\n";
+        // std::cout << "Matrix B:\n" << B << "\n\n";
+        // std::cout << "Matrix C (Result):\n" << C << "\n\n";
 
-        std::cout << "Actual c:\n" << A * B << std::endl;
+        // std::cout << "Actual c:\n" << A * B << std::endl;
+        std::cout << "norm of diff: " << (C - A*B).norm() << "\n\n";
+        std::cout << "Execution Time: " << duration.count() << " microseconds\n";
     }
 
     // Finalize MPI
